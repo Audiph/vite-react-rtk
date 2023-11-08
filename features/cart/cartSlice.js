@@ -40,7 +40,7 @@ const cartSlice = createSlice({
         total += item.amount * item.price;
       });
 
-      state.amount = amount.toFixed(2);
+      state.amount = amount;
       state.total = total.toFixed(2);
     },
   },

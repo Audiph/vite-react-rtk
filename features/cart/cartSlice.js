@@ -14,7 +14,6 @@ export const getCartItems = createAsyncThunk(
   'cart/getCartItems',
   async (_, thunkAPI) => {
     try {
-      console.log(thunkAPI);
       const res = await axios(url);
       return res.data;
     } catch (error) {
@@ -59,20 +58,18 @@ const cartSlice = createSlice({
       state.total = total.toFixed(2);
     },
   },
-  extraReducers: {
-    [getCartItems.pending]: (state) => {
-      state.isLoading = true;
-    },
-
-    [getCartItems.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.cartItems = action.payload;
-    },
-
-    [getCartItems.rejected]: (state, action) => {
-      console.log(action);
-      state.isLoading = false;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(getCartItems.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 
